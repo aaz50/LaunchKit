@@ -26,19 +26,24 @@ export function ResultsDashboard({ result, onDownload, onReset }: ResultsDashboa
   return (
     <div className="w-full max-w-7xl mx-auto space-y-6">
       {/* Header */}
-      <Card className="bg-linear-to-r from-blue-500 to-purple-600 text-white">
+      <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl border-slate-600">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                <CheckCircle2 className="h-8 w-8" />
+              <CardTitle className="text-3xl md:text-4xl font-bold flex items-center gap-3 text-white">
+                <CheckCircle2 className="h-8 w-8 md:h-10 md:w-10" aria-hidden="true" />
                 Launch Package Ready!
               </CardTitle>
-              <CardDescription className="text-white/90 text-lg mt-2">
+              <CardDescription className="text-slate-100 text-base md:text-lg mt-2 font-medium">
                 Your complete app launch materials have been generated
               </CardDescription>
             </div>
-            <Button onClick={onReset} variant="secondary">
+            <Button 
+              onClick={onReset} 
+              variant="secondary" 
+              className="h-11 text-base font-semibold bg-white text-slate-900 hover:bg-slate-100 transition-colors"
+              aria-label="Create another launch package"
+            >
               Create Another
             </Button>
           </div>
@@ -46,94 +51,106 @@ export function ResultsDashboard({ result, onDownload, onReset }: ResultsDashboa
       </Card>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Button
           onClick={() => onDownload('landing-page')}
-          className="h-auto py-4 flex-col gap-2"
+          className="h-auto py-6 flex-col gap-3 text-base font-semibold border-2 border-slate-600 bg-slate-800 text-white hover:border-blue-500 hover:bg-slate-700 transition-all"
           variant="outline"
+          aria-label="Download landing page"
         >
-          <Globe className="h-6 w-6" />
+          <Globe className="h-7 w-7" aria-hidden="true" />
           <span>Download Landing Page</span>
         </Button>
         <Button
           onClick={() => onDownload('pitch-deck')}
-          className="h-auto py-4 flex-col gap-2"
+          className="h-auto py-6 flex-col gap-3 text-base font-semibold border-2 border-slate-600 bg-slate-800 text-white hover:border-purple-500 hover:bg-slate-700 transition-all"
           variant="outline"
+          aria-label="Download pitch deck"
         >
-          <FileText className="h-6 w-6" />
+          <FileText className="h-7 w-7" aria-hidden="true" />
           <span>Download Pitch Deck</span>
         </Button>
         <Button
           onClick={() => onDownload('marketing')}
-          className="h-auto py-4 flex-col gap-2"
+          className="h-auto py-6 flex-col gap-3 text-base font-semibold border-2 border-slate-600 bg-slate-800 text-white hover:border-indigo-500 hover:bg-slate-700 transition-all"
           variant="outline"
+          aria-label="Download marketing materials"
         >
-          <Megaphone className="h-6 w-6" />
+          <Megaphone className="h-7 w-7" aria-hidden="true" />
           <span>Download Marketing</span>
         </Button>
         <Button
           onClick={() => onDownload('all')}
-          className="h-auto py-4 flex-col gap-2 bg-linear-to-r from-blue-500 to-purple-600"
+          className="h-auto py-6 flex-col gap-3 text-base font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
+          aria-label="Download all materials"
         >
-          <Download className="h-6 w-6" />
+          <Download className="h-7 w-7" aria-hidden="true" />
           <span>Download All</span>
         </Button>
       </div>
 
       {/* Content Preview */}
       <Tabs defaultValue="landing-page" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="landing-page">Landing Page</TabsTrigger>
-          <TabsTrigger value="pitch-deck">Pitch Deck</TabsTrigger>
-          <TabsTrigger value="marketing">Marketing</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 h-auto p-1 bg-slate-700 border border-slate-600">
+          <TabsTrigger value="landing-page" className="text-base font-semibold py-3 text-slate-300 data-[state=active]:bg-slate-800 data-[state=active]:text-blue-400 data-[state=active]:shadow-md">
+            Landing Page
+          </TabsTrigger>
+          <TabsTrigger value="pitch-deck" className="text-base font-semibold py-3 text-slate-300 data-[state=active]:bg-slate-800 data-[state=active]:text-purple-400 data-[state=active]:shadow-md">
+            Pitch Deck
+          </TabsTrigger>
+          <TabsTrigger value="marketing" className="text-base font-semibold py-3 text-slate-300 data-[state=active]:bg-slate-800 data-[state=active]:text-indigo-400 data-[state=active]:shadow-md">
+            Marketing
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="landing-page" className="space-y-4 mt-6">
           {result.landingPage ? (
             <>
-              <Card>
+              <Card className="shadow-md border-slate-600 bg-slate-800">
                 <CardHeader>
-                  <CardTitle>Hero Section</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-white">Hero Section</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h3 className="text-2xl font-bold mb-2">{result.landingPage.hero.headline}</h3>
-                    <p className="text-muted-foreground">{result.landingPage.hero.subheadline}</p>
-                    <Button className="mt-4">{result.landingPage.hero.cta}</Button>
+                    <h3 className="text-3xl font-bold mb-3 text-white">{result.landingPage.hero.headline}</h3>
+                    <p className="text-lg font-medium text-slate-200 mb-4">{result.landingPage.hero.subheadline}</p>
+                    <Button className="mt-4 text-base font-semibold h-11" aria-label={result.landingPage.hero.cta}>
+                      {result.landingPage.hero.cta}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="shadow-md border-slate-600 bg-slate-800">
                 <CardHeader>
-                  <CardTitle>Features</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-white">Features</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {result.landingPage.features.map((feature, idx) => (
-                      <div key={idx} className="p-4 border rounded-lg">
-                        <h4 className="font-semibold mb-2">{feature.title}</h4>
-                        <p className="text-sm text-muted-foreground">{feature.description}</p>
+                      <div key={idx} className="p-5 border-2 border-slate-600 rounded-xl bg-slate-700 hover:border-blue-500 transition-colors">
+                        <h4 className="font-bold text-base mb-2 text-white">{feature.title}</h4>
+                        <p className="text-sm font-medium text-slate-200">{feature.description}</p>
                       </div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="shadow-md border-slate-600 bg-slate-800">
                 <CardHeader>
-                  <CardTitle>How It Works</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-white">How It Works</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
+                  <div className="space-y-5">
                     {result.landingPage.howItWorks.map((step, idx) => (
-                      <div key={idx} className="flex gap-4">
-                        <div className="shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
+                      <div key={idx} className="flex gap-4 items-start">
+                        <div className="shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center font-bold text-base shadow-md">
                           {step.step}
                         </div>
-                        <div>
-                          <h4 className="font-semibold">{step.title}</h4>
-                          <p className="text-sm text-muted-foreground">{step.description}</p>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-base mb-1 text-white">{step.title}</h4>
+                          <p className="text-sm font-medium text-slate-200">{step.description}</p>
                         </div>
                       </div>
                     ))}
@@ -141,30 +158,42 @@ export function ResultsDashboard({ result, onDownload, onReset }: ResultsDashboa
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="shadow-md border-slate-600 bg-slate-800">
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <CardTitle>React Component Code</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-white">React Component Code</CardTitle>
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => copyToClipboard(result.landingPage.reactCode, 'react')}
+                      className="font-semibold gap-2 border-slate-600 text-white hover:bg-slate-700"
+                      aria-label={copiedSection === 'react' ? 'Copied to clipboard' : 'Copy code to clipboard'}
                     >
-                      {copiedSection === 'react' ? <CheckCircle2 className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                      {copiedSection === 'react' ? (
+                        <>
+                          <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                          <span>Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-4 w-4" aria-hidden="true" />
+                          <span>Copy</span>
+                        </>
+                      )}
                     </Button>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-                    <code>{result.landingPage.reactCode}</code>
+                  <pre className="bg-slate-950 text-slate-100 p-5 rounded-xl overflow-x-auto text-sm border-2 border-slate-700">
+                    <code className="font-mono">{result.landingPage.reactCode}</code>
                   </pre>
                 </CardContent>
               </Card>
             </>
           ) : (
-            <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                Landing page generation failed. Please try again.
+            <Card className="shadow-md border-slate-600 bg-slate-800">
+              <CardContent className="py-12 text-center">
+                <p className="text-base font-semibold text-red-400">Landing page generation failed. Please try again.</p>
               </CardContent>
             </Card>
           )}
@@ -173,37 +202,39 @@ export function ResultsDashboard({ result, onDownload, onReset }: ResultsDashboa
         <TabsContent value="pitch-deck" className="space-y-4 mt-6">
           {result.pitchDeck ? (
             <>
-              <Card>
+              <Card className="shadow-md border-slate-600 bg-gradient-to-br from-purple-900/40 to-blue-900/40">
                 <CardHeader>
-                  <CardTitle>{result.pitchDeck.metadata.title}</CardTitle>
-                  <CardDescription>{result.pitchDeck.metadata.subtitle}</CardDescription>
+                  <CardTitle className="text-3xl font-bold text-white">{result.pitchDeck.metadata.title}</CardTitle>
+                  <CardDescription className="text-lg font-medium text-slate-200">{result.pitchDeck.metadata.subtitle}</CardDescription>
                 </CardHeader>
               </Card>
 
               {result.pitchDeck.slides.map((slide, idx) => (
-                <Card key={idx}>
+                <Card key={idx} className="shadow-md border-slate-600 bg-slate-800">
                   <CardHeader>
-                    <CardTitle>Slide {slide.slideNumber}: {slide.title}</CardTitle>
+                    <CardTitle className="text-xl font-bold text-white">
+                      Slide {slide.slideNumber}: {slide.title}
+                    </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <ul className="list-disc list-inside space-y-2">
+                  <CardContent className="space-y-5">
+                    <ul className="list-disc list-inside space-y-3 ml-2">
                       {slide.content.map((point, pointIdx) => (
-                        <li key={pointIdx} className="text-sm">{point}</li>
+                        <li key={pointIdx} className="text-base font-medium text-slate-200">{point}</li>
                       ))}
                     </ul>
-                    <Separator />
-                    <div>
-                      <p className="text-xs font-semibold text-muted-foreground mb-2">Speaker Notes:</p>
-                      <p className="text-sm">{slide.speakerNotes}</p>
+                    <Separator className="my-4 bg-slate-600" />
+                    <div className="bg-slate-700 p-4 rounded-lg border border-slate-600">
+                      <p className="text-sm font-bold text-slate-200 mb-2">Speaker Notes:</p>
+                      <p className="text-base font-medium text-slate-200">{slide.speakerNotes}</p>
                     </div>
                   </CardContent>
                 </Card>
               ))}
             </>
           ) : (
-            <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                Pitch deck generation failed. Please try again.
+            <Card className="shadow-md border-slate-600 bg-slate-800">
+              <CardContent className="py-12 text-center">
+                <p className="text-base font-semibold text-red-400">Pitch deck generation failed. Please try again.</p>
               </CardContent>
             </Card>
           )}
@@ -212,48 +243,62 @@ export function ResultsDashboard({ result, onDownload, onReset }: ResultsDashboa
         <TabsContent value="marketing" className="space-y-4 mt-6">
           {result.marketing ? (
             <>
-              <Card>
+              <Card className="shadow-md border-slate-600 bg-slate-800">
                 <CardHeader>
-                  <CardTitle>Instagram Posts</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-white">Instagram Posts</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {result.marketing.instagram.posts.map((post, idx) => (
-                    <div key={idx} className="p-4 border rounded-lg space-y-2">
-                      <p className="text-sm">{post.content}</p>
-                      <div className="flex flex-wrap gap-1">
+                    <div key={idx} className="p-5 border-2 border-slate-600 rounded-xl space-y-3 bg-slate-700">
+                      <p className="text-base font-medium text-white">{post.content}</p>
+                      <div className="flex flex-wrap gap-2">
                         {post.hashtags.map((tag, tagIdx) => (
-                          <span key={tagIdx} className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                          <span key={tagIdx} className="text-sm font-semibold bg-blue-900/60 text-blue-200 px-3 py-1 rounded-full border border-blue-600">
                             {tag}
                           </span>
                         ))}
                       </div>
                       {post.imagePrompt && (
-                        <p className="text-xs text-muted-foreground italic">Image: {post.imagePrompt}</p>
+                        <p className="text-sm font-medium text-slate-200 italic bg-slate-600 p-3 rounded-lg border border-slate-500">
+                          Image: {post.imagePrompt}
+                        </p>
                       )}
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(post.content, `ig-${idx}`)}
+                        className="font-semibold gap-2 text-white hover:bg-slate-600"
+                        aria-label={copiedSection === `ig-${idx}` ? 'Copied' : 'Copy post'}
                       >
-                        {copiedSection === `ig-${idx}` ? <CheckCircle2 className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                        {copiedSection === `ig-${idx}` ? (
+                          <>
+                            <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                            <span>Copied!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-4 w-4" aria-hidden="true" />
+                            <span>Copy</span>
+                          </>
+                        )}
                       </Button>
                     </div>
                   ))}
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="shadow-md border-slate-600 bg-slate-800">
                 <CardHeader>
-                  <CardTitle>Twitter/X Posts</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-white">Twitter/X Posts</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {result.marketing.twitter.posts.map((post, idx) => (
-                    <div key={idx} className="p-4 border rounded-lg space-y-2">
-                      <p className="text-sm">{post.content}</p>
-                      <div className="flex justify-between items-center">
-                        <div className="flex flex-wrap gap-1">
+                    <div key={idx} className="p-5 border-2 border-slate-600 rounded-xl space-y-3 bg-slate-700">
+                      <p className="text-base font-medium text-white">{post.content}</p>
+                      <div className="flex justify-between items-center flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2">
                           {post.hashtags.map((tag, tagIdx) => (
-                            <span key={tagIdx} className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                            <span key={tagIdx} className="text-sm font-semibold bg-blue-900/60 text-blue-200 px-3 py-1 rounded-full border border-blue-600">
                               {tag}
                             </span>
                           ))}
@@ -262,71 +307,103 @@ export function ResultsDashboard({ result, onDownload, onReset }: ResultsDashboa
                           variant="ghost"
                           size="sm"
                           onClick={() => copyToClipboard(post.content, `tw-${idx}`)}
+                          className="font-semibold gap-2 text-white hover:bg-slate-600"
+                          aria-label={copiedSection === `tw-${idx}` ? 'Copied' : 'Copy post'}
                         >
-                          {copiedSection === `tw-${idx}` ? <CheckCircle2 className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                          {copiedSection === `tw-${idx}` ? (
+                            <>
+                              <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                              <span>Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="h-4 w-4" aria-hidden="true" />
+                              <span>Copy</span>
+                            </>
+                          )}
                         </Button>
                       </div>
-                      <p className="text-xs text-muted-foreground">{post.characterCount || post.content.length} characters</p>
+                      <p className="text-sm font-semibold text-slate-200 bg-slate-600 px-3 py-1 rounded-full inline-block border border-slate-500">
+                        {post.characterCount || post.content.length} characters
+                      </p>
                     </div>
                   ))}
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="shadow-md border-slate-600 bg-slate-800">
                 <CardHeader>
-                  <CardTitle>Google Ads</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-white">Google Ads</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {result.marketing.googleAds.map((ad, idx) => (
-                    <div key={idx} className="p-4 border rounded-lg space-y-2">
-                      <div className="space-y-1">
-                        <p className="text-sm font-semibold">Headlines:</p>
-                        <p className="text-sm">1. {ad.headline1}</p>
-                        <p className="text-sm">2. {ad.headline2}</p>
-                        <p className="text-sm">3. {ad.headline3}</p>
+                    <div key={idx} className="p-5 border-2 border-slate-600 rounded-xl space-y-4 bg-slate-700">
+                      <div className="space-y-2">
+                        <p className="text-base font-bold text-white">Headlines:</p>
+                        <p className="text-base font-medium text-slate-200">1. {ad.headline1}</p>
+                        <p className="text-base font-medium text-slate-200">2. {ad.headline2}</p>
+                        <p className="text-base font-medium text-slate-200">3. {ad.headline3}</p>
                       </div>
-                      <Separator />
-                      <div className="space-y-1">
-                        <p className="text-sm font-semibold">Descriptions:</p>
-                        <p className="text-sm">1. {ad.description1}</p>
-                        <p className="text-sm">2. {ad.description2}</p>
+                      <Separator className="my-3 bg-slate-600" />
+                      <div className="space-y-2">
+                        <p className="text-base font-bold text-white">Descriptions:</p>
+                        <p className="text-base font-medium text-slate-200">1. {ad.description1}</p>
+                        <p className="text-base font-medium text-slate-200">2. {ad.description2}</p>
                       </div>
                     </div>
                   ))}
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="shadow-md border-slate-600 bg-slate-800">
                 <CardHeader>
-                  <CardTitle>Email Launch Template</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-white">Email Launch Template</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-5">
                   <div>
-                    <p className="text-sm font-semibold mb-1">Subject:</p>
-                    <p className="text-sm p-2 bg-muted rounded">{result.marketing.emailTemplate.subject}</p>
+                    <p className="text-base font-bold mb-2 text-white">Subject:</p>
+                    <p className="text-base font-medium p-4 bg-slate-700 rounded-xl border border-slate-600 text-white">
+                      {result.marketing.emailTemplate.subject}
+                    </p>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold mb-1">Preheader:</p>
-                    <p className="text-sm p-2 bg-muted rounded">{result.marketing.emailTemplate.preheader}</p>
+                    <p className="text-base font-bold mb-2 text-white">Preheader:</p>
+                    <p className="text-base font-medium p-4 bg-slate-700 rounded-xl border border-slate-600 text-white">
+                      {result.marketing.emailTemplate.preheader}
+                    </p>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold mb-1">Body:</p>
-                    <div className="text-sm p-4 bg-muted rounded" dangerouslySetInnerHTML={{ __html: result.marketing.emailTemplate.body }} />
+                    <p className="text-base font-bold mb-2 text-white">Body:</p>
+                    <div 
+                      className="text-base font-medium p-5 bg-slate-700 rounded-xl border border-slate-600 text-white" 
+                      dangerouslySetInnerHTML={{ __html: result.marketing.emailTemplate.body }} 
+                    />
                   </div>
                   <Button
                     variant="outline"
                     onClick={() => copyToClipboard(result.marketing.emailTemplate.body, 'email')}
+                    className="font-semibold text-base h-11 gap-2 border-slate-600 text-white hover:bg-slate-700"
+                    aria-label={copiedSection === 'email' ? 'Email template copied' : 'Copy email template'}
                   >
-                    {copiedSection === 'email' ? <CheckCircle2 className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
-                    Copy Email Template
+                    {copiedSection === 'email' ? (
+                      <>
+                        <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+                        <span>Copied Email Template!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-5 w-5" aria-hidden="true" />
+                        <span>Copy Email Template</span>
+                      </>
+                    )}
                   </Button>
                 </CardContent>
               </Card>
             </>
           ) : (
-            <Card>
-              <CardContent className="py-8 text-center text-muted-foreground">
-                Marketing content generation failed. Please try again.
+            <Card className="shadow-md border-slate-600 bg-slate-800">
+              <CardContent className="py-12 text-center">
+                <p className="text-base font-semibold text-red-400">Marketing content generation failed. Please try again.</p>
               </CardContent>
             </Card>
           )}

@@ -77,15 +77,15 @@ export function AppInputForm({ onSubmit, loading = false }: AppInputFormProps) {
   const isFeaturesComplete = (formData.keyFeatures?.filter(f => f.trim() !== '').length || 0) >= 3;
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
-      <CardHeader className="text-center">
+    <Card className="w-full max-w-4xl mx-auto shadow-2xl border-slate-600 bg-slate-800">
+      <CardHeader className="text-center space-y-4">
         <div className="flex justify-center mb-4">
-          <div className="p-3 bg-linear-to-br from-blue-500 to-purple-600 rounded-2xl">
-            <Sparkles className="h-8 w-8 text-white" />
+          <div className="p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg">
+            <Sparkles className="h-10 w-10 text-white" aria-hidden="true" />
           </div>
         </div>
-        <CardTitle className="text-3xl font-bold">App Launch Generator</CardTitle>
-        <CardDescription className="text-lg">
+        <CardTitle className="text-4xl font-bold text-white">App Launch Generator</CardTitle>
+        <CardDescription className="text-lg font-medium text-slate-200">
           Tell us about your app and we'll create everything you need to launch
         </CardDescription>
       </CardHeader>
@@ -112,50 +112,59 @@ export function AppInputForm({ onSubmit, loading = false }: AppInputFormProps) {
 
           <TabsContent value="basics" className="space-y-6 mt-6">
             <div className="space-y-2">
-              <Label htmlFor="appName">App Name *</Label>
+              <Label htmlFor="appName" className="text-base font-semibold text-white">App Name *</Label>
               <Input
                 id="appName"
                 placeholder="e.g., TaskFlow"
                 value={formData.appName}
                 onChange={(e) => updateField('appName', e.target.value)}
+                className="text-base bg-slate-700 text-white border-slate-600 placeholder:text-slate-400"
+                aria-required="true"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="tagline">Tagline *</Label>
+              <Label htmlFor="tagline" className="text-base font-semibold text-white">Tagline *</Label>
               <Input
                 id="tagline"
                 placeholder="e.g., Project management that actually works"
                 value={formData.tagline}
                 onChange={(e) => updateField('tagline', e.target.value)}
+                className="text-base bg-slate-700 text-white border-slate-600 placeholder:text-slate-400"
+                aria-required="true"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="targetAudience">Target Audience *</Label>
+              <Label htmlFor="targetAudience" className="text-base font-semibold text-white">Target Audience *</Label>
               <Input
                 id="targetAudience"
                 placeholder="e.g., Small business owners and freelancers"
                 value={formData.targetAudience}
                 onChange={(e) => updateField('targetAudience', e.target.value)}
+                className="text-base bg-slate-700 text-white border-slate-600 placeholder:text-slate-400"
+                aria-required="true"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="problemSolved">Problem Being Solved *</Label>
+              <Label htmlFor="problemSolved" className="text-base font-semibold text-white">Problem Being Solved *</Label>
               <Textarea
                 id="problemSolved"
                 placeholder="Describe the main problem your app solves..."
                 value={formData.problemSolved}
                 onChange={(e) => updateField('problemSolved', e.target.value)}
                 rows={4}
+                className="text-base bg-slate-700 text-white border-slate-600 placeholder:text-slate-400"
+                aria-required="true"
               />
             </div>
 
             <Button
               onClick={() => setCurrentTab('features')}
               disabled={!isBasicsComplete}
-              className="w-full"
+              className="w-full text-base font-semibold h-12"
+              aria-label="Continue to features section"
             >
               Continue to Features
             </Button>
@@ -163,19 +172,23 @@ export function AppInputForm({ onSubmit, loading = false }: AppInputFormProps) {
 
           <TabsContent value="features" className="space-y-6 mt-6">
             <div className="space-y-4">
-              <Label>Key Features * (minimum 3)</Label>
+              <Label className="text-base font-semibold text-white">Key Features * (minimum 3)</Label>
               {formData.keyFeatures?.map((feature, index) => (
                 <div key={index} className="flex gap-2">
                   <Input
                     placeholder={`Feature ${index + 1}`}
                     value={feature}
                     onChange={(e) => updateFeature(index, e.target.value)}
+                    className="text-base bg-slate-700 text-white border-slate-600 placeholder:text-slate-400"
+                    aria-label={`Feature ${index + 1}`}
                   />
                   {formData.keyFeatures && formData.keyFeatures.length > 3 && (
                     <Button
                       variant="outline"
                       size="icon"
                       onClick={() => removeFeature(index)}
+                      aria-label={`Remove feature ${index + 1}`}
+                      className="shrink-0"
                     >
                       ×
                     </Button>
@@ -185,7 +198,8 @@ export function AppInputForm({ onSubmit, loading = false }: AppInputFormProps) {
               <Button
                 variant="outline"
                 onClick={addFeature}
-                className="w-full"
+                className="w-full text-base font-semibold h-11"
+                aria-label="Add another feature"
               >
                 + Add Another Feature
               </Button>
@@ -195,14 +209,16 @@ export function AppInputForm({ onSubmit, loading = false }: AppInputFormProps) {
               <Button
                 variant="outline"
                 onClick={() => setCurrentTab('basics')}
-                className="w-full"
+                className="w-full text-base font-semibold h-12"
+                aria-label="Go back to basics section"
               >
                 Back
               </Button>
               <Button
                 onClick={() => setCurrentTab('branding')}
                 disabled={!isFeaturesComplete}
-                className="w-full"
+                className="w-full text-base font-semibold h-12"
+                aria-label="Continue to branding section"
               >
                 Continue to Branding
               </Button>
@@ -211,53 +227,62 @@ export function AppInputForm({ onSubmit, loading = false }: AppInputFormProps) {
 
           <TabsContent value="branding" className="space-y-6 mt-6">
             <div className="space-y-4">
-              <Label>Brand Colors</Label>
+              <Label className="text-base font-semibold text-white">Brand Colors</Label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="primaryColor" className="text-sm">Primary Color</Label>
+                  <Label htmlFor="primaryColor" className="text-sm font-medium text-slate-200">Primary Color</Label>
                   <div className="flex gap-2">
                     <Input
                       id="primaryColor"
                       type="color"
                       value={formData.brandColors?.primary}
                       onChange={(e) => updateField('brandColors', { ...formData.brandColors, primary: e.target.value })}
-                      className="w-16 h-10"
+                      className="w-16 h-11 cursor-pointer bg-slate-700 border-slate-600"
+                      aria-label="Choose primary color"
                     />
                     <Input
                       value={formData.brandColors?.primary}
                       onChange={(e) => updateField('brandColors', { ...formData.brandColors, primary: e.target.value })}
+                      className="text-base font-mono bg-slate-700 text-white border-slate-600"
+                      aria-label="Primary color hex value"
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="secondaryColor" className="text-sm">Secondary Color</Label>
+                  <Label htmlFor="secondaryColor" className="text-sm font-medium text-slate-200">Secondary Color</Label>
                   <div className="flex gap-2">
                     <Input
                       id="secondaryColor"
                       type="color"
                       value={formData.brandColors?.secondary}
                       onChange={(e) => updateField('brandColors', { ...formData.brandColors, secondary: e.target.value })}
-                      className="w-16 h-10"
+                      className="w-16 h-11 cursor-pointer bg-slate-700 border-slate-600"
+                      aria-label="Choose secondary color"
                     />
                     <Input
                       value={formData.brandColors?.secondary}
                       onChange={(e) => updateField('brandColors', { ...formData.brandColors, secondary: e.target.value })}
+                      className="text-base font-mono bg-slate-700 text-white border-slate-600"
+                      aria-label="Secondary color hex value"
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="accentColor" className="text-sm">Accent Color</Label>
+                  <Label htmlFor="accentColor" className="text-sm font-medium text-slate-200">Accent Color</Label>
                   <div className="flex gap-2">
                     <Input
                       id="accentColor"
                       type="color"
                       value={formData.brandColors?.accent}
                       onChange={(e) => updateField('brandColors', { ...formData.brandColors, accent: e.target.value })}
-                      className="w-16 h-10"
+                      className="w-16 h-11 cursor-pointer bg-slate-700 border-slate-600"
+                      aria-label="Choose accent color"
                     />
                     <Input
                       value={formData.brandColors?.accent}
                       onChange={(e) => updateField('brandColors', { ...formData.brandColors, accent: e.target.value })}
+                      className="text-base font-mono bg-slate-700 text-white border-slate-600"
+                      aria-label="Accent color hex value"
                     />
                   </div>
                 </div>
@@ -265,19 +290,19 @@ export function AppInputForm({ onSubmit, loading = false }: AppInputFormProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="stylePreference">Style Preference</Label>
+              <Label htmlFor="stylePreference" className="text-base font-semibold text-white">Style Preference</Label>
               <Select
                 value={formData.stylePreference}
                 onValueChange={(value) => updateField('stylePreference', value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="text-base" aria-label="Select style preference">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="modern">Modern</SelectItem>
-                  <SelectItem value="minimal">Minimal</SelectItem>
-                  <SelectItem value="bold">Bold</SelectItem>
-                  <SelectItem value="elegant">Elegant</SelectItem>
+                  <SelectItem value="modern" className="text-base">Modern</SelectItem>
+                  <SelectItem value="minimal" className="text-base">Minimal</SelectItem>
+                  <SelectItem value="bold" className="text-base">Bold</SelectItem>
+                  <SelectItem value="elegant" className="text-base">Elegant</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -286,13 +311,15 @@ export function AppInputForm({ onSubmit, loading = false }: AppInputFormProps) {
               <Button
                 variant="outline"
                 onClick={() => setCurrentTab('features')}
-                className="w-full"
+                className="w-full text-base font-semibold h-12"
+                aria-label="Go back to features section"
               >
                 Back
               </Button>
               <Button
                 onClick={() => setCurrentTab('extras')}
-                className="w-full"
+                className="w-full text-base font-semibold h-12"
+                aria-label="Continue to extras section"
               >
                 Continue to Extras
               </Button>
@@ -301,31 +328,32 @@ export function AppInputForm({ onSubmit, loading = false }: AppInputFormProps) {
 
           <TabsContent value="extras" className="space-y-6 mt-6">
             <div className="space-y-2">
-              <Label htmlFor="competitors">Competitors (Optional)</Label>
+              <Label htmlFor="competitors" className="text-base font-semibold text-white">Competitors (Optional)</Label>
               <Textarea
                 id="competitors"
                 placeholder="List your main competitors..."
                 value={formData.competitors}
                 onChange={(e) => updateField('competitors', e.target.value)}
                 rows={3}
+                className="text-base bg-slate-700 text-white border-slate-600 placeholder:text-slate-400"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="fundingStage">Funding Stage</Label>
+              <Label htmlFor="fundingStage" className="text-base font-semibold text-white">Funding Stage</Label>
               <Select
                 value={formData.fundingStage}
                 onValueChange={(value) => updateField('fundingStage', value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="text-base" aria-label="Select funding stage">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="pre-seed">Pre-Seed</SelectItem>
-                  <SelectItem value="seed">Seed</SelectItem>
-                  <SelectItem value="series-a">Series A</SelectItem>
-                  <SelectItem value="series-b">Series B</SelectItem>
-                  <SelectItem value="bootstrapped">Bootstrapped</SelectItem>
+                  <SelectItem value="pre-seed" className="text-base">Pre-Seed</SelectItem>
+                  <SelectItem value="seed" className="text-base">Seed</SelectItem>
+                  <SelectItem value="series-a" className="text-base">Series A</SelectItem>
+                  <SelectItem value="series-b" className="text-base">Series B</SelectItem>
+                  <SelectItem value="bootstrapped" className="text-base">Bootstrapped</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -334,14 +362,16 @@ export function AppInputForm({ onSubmit, loading = false }: AppInputFormProps) {
               <Button
                 variant="outline"
                 onClick={() => setCurrentTab('branding')}
-                className="w-full"
+                className="w-full text-base font-semibold h-12"
+                aria-label="Go back to branding section"
               >
                 Back
               </Button>
               <Button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-base font-semibold h-12 shadow-lg hover:shadow-xl transition-all"
+                aria-label="Generate launch package"
               >
                 {loading ? 'Generating...' : '✨ Generate Launch Package'}
               </Button>

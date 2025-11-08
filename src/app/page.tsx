@@ -129,19 +129,19 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-950 dark:via-blue-950 dark:to-purple-950">
+    <main className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950">
       {/* Header */}
-      <header className="border-b bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
+      <header className="border-b border-slate-600 bg-slate-800/90 backdrop-blur-md sticky top-0 z-50 shadow-lg">
+        <div className="container mx-auto px-4 py-5">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-linear-to-br from-blue-500 to-purple-600 rounded-xl">
-              <Rocket className="h-6 w-6 text-white" />
+            <div className="p-2.5 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
+              <Rocket className="h-6 w-6 text-white" aria-hidden="true" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold text-white">
                 LaunchKit
               </h1>
-              <p className="text-xs text-muted-foreground">AI-Powered Launch Package Generator</p>
+              <p className="text-sm font-medium text-slate-200">AI-Powered Launch Package Generator</p>
             </div>
           </div>
         </div>
@@ -173,11 +173,11 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm mt-20">
+      <footer className="border-t border-slate-600 bg-slate-800/90 backdrop-blur-md mt-20">
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-sm text-muted-foreground">
-            <p>Built with Next.js, OpenAI, and OpenRouter</p>
-            <p className="mt-2">Generate complete launch packages in minutes</p>
+          <div className="text-center">
+            <p className="text-sm font-medium text-slate-200">Built with Next.js, OpenAI, and OpenRouter</p>
+            <p className="mt-2 text-sm text-slate-300">Generate complete launch packages in minutes</p>
           </div>
         </div>
       </footer>
