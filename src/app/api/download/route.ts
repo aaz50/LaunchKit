@@ -26,11 +26,18 @@ export async function POST(req: NextRequest) {
         break;
 
       case 'pitch-deck':
-        if (data.pitchDeck) {
-          // Convert pitch deck to markdown format for download
-          content = convertPitchDeckToMarkdown(data.pitchDeck);
-          filename = `${data.projectId}-pitch-deck.md`;
-          contentType = 'text/markdown';
+        if (data.pitchDeck?.pptxBase64) {
+          // Decode base64 PPTX data
+          const buffer = Buffer.from(data.pitchDeck.pptxBase64, 'base64');
+          filename = `${data.projectId}-pitch-deck.pptx`;
+          contentType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+          
+          return new NextResponse(buffer, {
+            headers: {
+              'Content-Type': contentType,
+              'Content-Disposition': `attachment; filename="${filename}"`,
+            },
+          });
         }
         break;
 

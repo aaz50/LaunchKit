@@ -1,4 +1,5 @@
 import type { AgentContext, AgentRequest, AgentResponse } from '@agentuity/sdk';
+import PptxGenJS from 'pptxgenjs';
 
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
@@ -9,6 +10,24 @@ interface OpenRouterResponse {
       content: string;
     };
   }>;
+}
+
+interface PitchDeckSlide {
+  slideNumber: number;
+  title: string;
+  content: string[];
+  speakerNotes: string;
+  layout: 'title' | 'bullets' | 'two-column' | 'image-text' | 'chart';
+}
+
+interface PitchDeckData {
+  slides: PitchDeckSlide[];
+  metadata: {
+    title: string;
+    subtitle: string;
+    author: string;
+    date: string;
+  };
 }
 
 export const welcome = () => {
@@ -30,6 +49,138 @@ export const welcome = () => {
     ],
   };
 };
+
+async function generatePPTX(pitchDeckData: PitchDeckData): Promise<string> {
+  const pptx = new PptxGenJS();
+  
+  // Configure presentation
+  pptx.author = pitchDeckData.metadata.author;
+  pptx.title = pitchDeckData.metadata.title;
+  pptx.subject = pitchDeckData.metadata.subtitle;
+  
+  // Define color scheme (professional blues and grays)
+  const colors = {
+    primary: '0F172A',      // Slate 900
+    secondary: '3B82F6',    // Blue 500
+    accent: '06B6D4',       // Cyan 500
+    text: '1E293B',         // Slate 800
+    lightText: '64748B',    // Slate 500
+    background: 'FFFFFF',   // White
+    lightBg: 'F1F5F9'       // Slate 100
+  };
+  
+  // Process each slide
+  for (const slideData of pitchDeckData.slides) {
+    const slide = pptx.addSlide();
+    
+    // Add background
+    slide.background = { color: colors.background };
+    
+    if (slideData.slideNumber === 1) {
+      // Title slide (centered)
+      slide.addText(pitchDeckData.metadata.title, {
+        x: 0.5,
+        y: 2.5,
+        w: 9,
+        h: 1.5,
+        fontSize: 44,
+        bold: true,
+        color: colors.primary,
+        align: 'center',
+        fontFace: 'Arial'
+      });
+      
+      slide.addText(pitchDeckData.metadata.subtitle, {
+        x: 0.5,
+        y: 4.0,
+        w: 9,
+        h: 0.8,
+        fontSize: 24,
+        color: colors.lightText,
+        align: 'center',
+        fontFace: 'Arial'
+      });
+      
+      slide.addText(`${pitchDeckData.metadata.author} | ${pitchDeckData.metadata.date}`, {
+        x: 0.5,
+        y: 5.2,
+        w: 9,
+        h: 0.5,
+        fontSize: 14,
+        color: colors.lightText,
+        align: 'center',
+        fontFace: 'Arial'
+      });
+    } else {
+      // Content slides
+      // Add title bar with colored background
+      slide.addShape('rect', {
+        x: 0,
+        y: 0,
+        w: 10,
+        h: 0.8,
+        fill: { color: colors.primary }
+      });
+      
+      slide.addText(slideData.title, {
+        x: 0.5,
+        y: 0.15,
+        w: 9,
+        h: 0.5,
+        fontSize: 28,
+        bold: true,
+        color: colors.background,
+        fontFace: 'Arial'
+      });
+      
+      // Add content bullets
+      if (slideData.content && slideData.content.length > 0) {
+        const bulletPoints = slideData.content.map(point => ({
+          text: point,
+          options: {
+            bullet: true,
+            fontSize: 18,
+            color: colors.text,
+            paraSpaceBefore: 12,
+            paraSpaceAfter: 12
+          }
+        }));
+        
+        slide.addText(bulletPoints, {
+          x: 0.5,
+          y: 1.2,
+          w: 9,
+          h: 4.5,
+          fontSize: 18,
+          color: colors.text,
+          fontFace: 'Arial',
+          bullet: { type: 'number' }
+        });
+      }
+      
+      // Add slide number
+      slide.addText(`${slideData.slideNumber}`, {
+        x: 9.2,
+        y: 7.2,
+        w: 0.5,
+        h: 0.3,
+        fontSize: 12,
+        color: colors.lightText,
+        align: 'right',
+        fontFace: 'Arial'
+      });
+    }
+    
+    // Add speaker notes
+    if (slideData.speakerNotes) {
+      slide.addNotes(slideData.speakerNotes);
+    }
+  }
+  
+  // Generate PPTX as base64
+  const pptxData = await pptx.write({ outputType: 'base64' });
+  return pptxData as string;
+}
 
 const SYSTEM_PROMPT = `You are a seasoned startup advisor and pitch deck expert who has helped hundreds of companies raise funding.
 
@@ -149,9 +300,32 @@ Return ONLY valid JSON with no markdown formatting or code blocks. Set the date 
         jsonContent = jsonMatch[1];
       }
       
-      const jsonData = JSON.parse(jsonContent);
-      ctx.logger.info('Successfully generated pitch deck');
-      return resp.json(jsonData);
+      const jsonData: PitchDeckData = JSON.parse(jsonContent);
+      ctx.logger.info('Successfully generated pitch deck JSON');
+      
+      // Generate PPTX from the JSON data
+      try {
+        ctx.logger.info('Generating PPTX file...');
+        const pptxBase64 = await generatePPTX(jsonData);
+        ctx.logger.info('Successfully generated PPTX file');
+        
+        // Return both the slide data and the PPTX file
+        return resp.json({
+          slides: jsonData.slides,
+          metadata: jsonData.metadata,
+          pptxBase64: pptxBase64
+        });
+      } catch (pptxError) {
+        ctx.logger.error('Failed to generate PPTX:', pptxError);
+        // Fallback: return just the JSON data with an error message
+        return resp.json({
+          slides: jsonData.slides,
+          metadata: jsonData.metadata,
+          pptxBase64: '',
+          error: 'Failed to generate PPTX file',
+          details: String(pptxError)
+        });
+      }
     } catch (parseError) {
       ctx.logger.error('Failed to parse JSON response:', parseError);
       return resp.json({

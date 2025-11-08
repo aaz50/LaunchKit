@@ -71,6 +71,7 @@ export interface PitchDeckOutput {
     author: string;
     date: string;
   };
+  pptxBase64: string;
 }
 
 export interface MarketingContent {

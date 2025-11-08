@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@agentuity/sdk": "^0.0.157",
+    "pptxgenjs": "^4.0.1",
     "source-map-js": "^1.2.1"
   },
   "module": "index.ts"
