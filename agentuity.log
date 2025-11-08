@@ -1,0 +1,15 @@
+$ agentuity dev
+ ✓ Synchronized project to .env file: /Users/nathanmorelli/Desktop/Hackathon/LaunchKit/agentuity-project/.env
+┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                                    │
+│  ⨺ Agentuity DevMode                                                                               │
+│                                                                                                    │
+│  DevMode     ]8;;https://app.agentuity.com/devmode/ep_rcbj41wprhttps://app.agentuity.com/devmode/ep_rcbj41wpr]8;;                                        │
+│  Local       ]8;;http://127.0.0.1:3500http://127.0.0.1:3500]8;;                                                                 │
+│  Public      ]8;;https://ep_rcbj41wpr.agentuity.runhttps://ep_rcbj41wpr.agentuity.run]8;;  (only accessible while running)                   │
+│                                                                                                    │
+└────────────────────────────────────────────────────────────────────────────────────────────────────┘
+src/agents/landing-page-agent/index.ts(117,21): error TS18046: 'data' is of type 'unknown'.
+src/agents/marketing-agent/index.ts(162,21): error TS18046: 'data' is of type 'unknown'.
+src/agents/pitch-deck-agent/index.ts(130,21): error TS18046: 'data' is of type 'unknown'.
+[ERROR] 🚫 TypeScript check failed
